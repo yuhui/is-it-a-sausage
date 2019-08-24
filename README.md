@@ -19,6 +19,7 @@ In addition, the app can determine if the user had uploaded an "adult" image.
 Pre-requisites:
 
 - Python v3 or higher
+- valid Azure Cognitive Services endpoint
 - valid Azure Cognitive Services ComputerVision keys
 
 1. Clone this repository to your computer.
@@ -28,21 +29,25 @@ Pre-requisites:
     source env/bin/activate
     pip installl -r requirements.txt
     ```
-3. Add your ComputerVision keys in `/azure_modules/computervision/client.py`:
+3. Add your Cognitive Services endpoint in `/azure_modules/computervision/client.py`:
+    ```python
+    ENDPOINT = 'insert-endpoint'
+    ```
+4. Add your ComputerVision keys in `/azure_modules/computervision/client.py`:
     ```python
     MS_COGNITIVE_VISION_KEY_1 = 'insert-key-1'
     MS_COGNITIVE_VISION_KEY_2 = 'insert-key-2'
     ```
-4. (optional) Change the Flask secret key at `/app/config.py` or set in your `ENV`:
+5. (optional) Change the Flask secret key at `/app/config.py` or set in your `ENV`:
     ```python
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
     ```
     This is optional because if you're running this app on your computer only, then you don't need to worry about using a unique key.
-5. Run the app.
+6. Run the app.
     ```bash
     flask run
     ```
-6. Open the app in your browser: http://127.0.0.1:5000/
+7. Open the app in your browser: http://127.0.0.1:5000/
 
 ## Azure AI Hackathon submission
 

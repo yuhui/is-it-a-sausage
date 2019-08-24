@@ -21,7 +21,7 @@ import requests
 
 from .exception import ComputerVisionException
 
-ENDPOINT = 'https://is-it-a-sausage--computer-vision-image-tagging.cognitiveservices.azure.com'
+ENDPOINT = 'insert-endpoint'
 MS_COGNITIVE_VISION_KEY_1 = 'insert-key-1'
 MS_COGNITIVE_VISION_KEY_2 = 'insert-key-2'
 ANALYZE_ENDPOINT_PATH = '/vision/v2.0/analyze'

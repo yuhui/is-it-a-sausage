@@ -1,0 +1,44 @@
+{% extends "__base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>Is it a sausage?</h1>
+    <p>
+        This app is inspired by the TV show, "Silicon Valley", where the
+        character Jian Yang created an app that can determine if the object in
+        a picture is a sausage or not.
+    </p>
+
+    {% if image_result %}
+        {% if image_result['is_adult_content'] %}
+            <div class="alert-danger">
+                <p>
+                    You uploaded
+                    {% if image_result['is_racy_content'] %}
+                        a <strong>very sexy</strong>
+                    {% else %}
+                        an
+                    {% endif %}
+                    adult-only image!
+                </p>
+            </div>
+        {% else %}
+            <p>
+                You uploaded this image:<br />
+                <img src="{{ image_result['image_src'] }}" />
+            </p>
+        {% endif %}
+        <p>
+            You guessed that it is <strong>"{{ image_result['human_tag'] }}"</strong>.<br />
+            The machine guessed that it is <strong>"{{ image_result['image_tag'] }}"</strong>.
+        </p>
+
+        <hr />
+    {% endif %}
+
+    <p>
+        Upload an image and what you think is the main object in that image.<br />
+        (It doesn't have to be a <em>sausage</em>!)
+    </p>
+    {{ wtf.quick_form(sausage_form) }}
+{% endblock %}

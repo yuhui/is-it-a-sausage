@@ -1,0 +1,6 @@
+flask
+flask-bootstrap
+flask-uploads
+flask-wtf
+pylint
+requests

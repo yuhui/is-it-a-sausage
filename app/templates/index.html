@@ -29,8 +29,11 @@
             </p>
         {% endif %}
         <p>
-            You guessed that it is <strong>"{{ image_result['human_tag'] }}"</strong>.<br />
             The machine guessed that it is <strong>"{{ image_result['image_tag'] }}"</strong>.
+            You guessed that it is <strong>
+                "{{ image_result['human_label'] }}"
+            </strong>.
+            <br />
         </p>
 
         <hr />

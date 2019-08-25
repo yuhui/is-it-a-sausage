@@ -28,7 +28,7 @@ class SausageForm(FlaskForm):
             FileAllowed(images, 'Images only!'),
         ],
     )
-    human_guess = StringField(
+    human_label = StringField(
         'What I think the image shows',
         validators=[DataRequired()],
     )

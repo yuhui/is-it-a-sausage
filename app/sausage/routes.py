@@ -39,16 +39,16 @@ def index():
         image_mimetype = image_file.mimetype
         image_data = image_file.read()
 
-        human_guess = sausage_form.human_guess.data
 
         computer_vision_client = Client()
         image_analysis = computer_vision_client.analyse_image(image_data)
+        human_label = sausage_form.human_label.data
 
         image_result = {
-            'human_tag': human_guess,
             'image_tag': image_analysis['image_tag'],
             'is_adult_content': image_analysis['is_adult_content'],
             'is_racy_content': image_analysis['is_racy_content'],
+            'human_label': human_label,
             'image_src': 'data:{};base64,{}'.format(
                 image_mimetype,
                 base64.b64encode(image_data).decode(),

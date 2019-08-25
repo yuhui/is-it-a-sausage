@@ -20,6 +20,7 @@ from app.sausage import bp
 from app.sausage.forms import SausageForm
 
 from azure_modules.computervision.client import Client
+from azure_modules.computervision.exception import ComputerVisionException
 
 @bp.route('/', methods=['GET', 'POST'])
 @bp.route('/index', methods=['GET', 'POST'])
@@ -33,32 +34,39 @@ def index():
 
     Then, show the form to accept the user's image and label.
     """
+    image_result = None
+    image_analysis = None
+
     sausage_form = SausageForm()
     if sausage_form.validate_on_submit():
         image_file = request.files['image_file']
         image_mimetype = image_file.mimetype
         image_data = image_file.read()
 
-
-        computer_vision_client = Client()
-        image_analysis = computer_vision_client.analyse_image(image_data)
         human_label = sausage_form.human_label.data
 
         image_result = {
-            'image_tag': image_analysis['image_tag'],
-            'is_adult_content': image_analysis['is_adult_content'],
-            'is_racy_content': image_analysis['is_racy_content'],
             'human_label': human_label,
             'image_src': 'data:{};base64,{}'.format(
                 image_mimetype,
                 base64.b64encode(image_data).decode(),
             )
         }
-    else:
-        image_result = None
+
+        try:
+            computer_vision_client = Client()
+            image_analysis = computer_vision_client.analyse_image(
+                image_data,
+                human_label,
+            )
+        except ComputerVisionException as e:
+            image_analysis = {
+                'error_message': e,
+            }
 
     return render_template(
         'index.html',
         sausage_form=sausage_form,
         image_result=image_result,
+        image_analysis=image_analysis,
     )

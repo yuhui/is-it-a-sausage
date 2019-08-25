@@ -10,6 +10,8 @@ This app is inspired by the TV show, ["Silicon Valley"](https://en.wikipedia.org
 
 A user uploads a picture and a word that describes the primary object in that image. The app interacts with [Azure Cognitive Services' Computer Vision](https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/) to determine what is the object in that image. It then returns both the user's guess and the machine's guess.
 
+The user can then use Computer Vision's label as a cross-check for what he has identified. If he is satisfied with Computer Vision's accuracy, then he can rely on Computer Vision to identify labels in unlabelled images, which can reduce human effort in labelling images.
+
 The image can show any object, not just a sausage!
 
 In addition, the app can determine if the user had uploaded an "adult" image.
@@ -22,7 +24,7 @@ Pre-requisites:
 - valid Azure Cognitive Services endpoint
 - valid Azure Cognitive Services ComputerVision keys
 
-1. Clone this repository to your computer.
+1. Clone this repository to a folder in your computer.
 2. Setup the requirements.
     ```bash
     virtualenv env
@@ -48,6 +50,15 @@ Pre-requisites:
     flask run
     ```
 7. Open the app in your browser: http://127.0.0.1:5000/
+8. Use the app as instructed.
+9. To clean up, delete the folder in your computer.
+    ```bash
+    # Ctrl-C to stop Flask.
+
+    deactivate
+    cd ..
+    rm -rf is-it-a-sausage
+    ```
 
 ## Azure AI Hackathon submission
 

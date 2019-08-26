@@ -40,21 +40,17 @@ class Client(object):
         self.key = MS_COGNITIVE_VISION_KEY_1
         self.endpoint = ENDPOINT
 
-    def analyse_image(self, image_data, expected_tag=None):
+    def analyse_image(self, image_data):
         """Send image data to ComputerVision and return the identified tags
         and adult nature.
 
         Arguments:
             image_data (str):
                 Binary string of the image.
-            expected_tag (str):
-                (optional) The tag that is expected to be identified by
-                ComputerVision. If this tag is found, then it is returned.
-                Otherwise, the first tag that ComputerVision returns is
-                returned.
 
         Returns:
             (dict) Image tags and whether it is of adult and racy nature.
+            Keys: "image_tags", "is_adult_content", "is_racy_content".
         """
         url = self.endpoint + ANALYZE_ENDPOINT_PATH
 
@@ -88,27 +84,11 @@ class Client(object):
         is_racy_content = adult_info['isRacyContent']
 
         image_tags = image_analysis['tags']
-        if len(image_tags) > 0:
-            found_expected_image_tags = [
-                t for t in image_tags if t['name'] == expected_tag
-            ]
-            if len(found_expected_image_tags) > 0:
-                image_tag = found_expected_image_tags[0]
-            else:
-                image_tag = image_tags[0]
-
-            image_tag_name = image_tag['name']
-            image_tag_confidence = int(image_tag['confidence'] * 100)
-        else:
+        if len(image_tags) is 0:
             raise ComputerVisionException('Failed to label the image.')
 
-        image_label = '{} ({}% confidence)'.format(
-            image_tag_name,
-            image_tag_confidence,
-        )
-
         return {
+            'image_tags': image_tags,
             'is_adult_content': is_adult_content,
             'is_racy_content': is_racy_content,
-            'image_label': image_label,
         }

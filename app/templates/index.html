@@ -25,24 +25,33 @@
         {% else %}
             <p>
                 You uploaded this image:<br />
-                <img src="{{ image_result['image_src'] }}" />
+                <img src="{{ image_src }}" />
             </p>
         {% endif %}
         <p>
             You guessed that it is <strong>
-                "{{ image_result['human_label'] }}"
+                "{{ human_label }}"
             </strong>.
-            <br />
-            {% if image_analysis['error_message'] %}
+        </p>
+        {% if image_analysis['error_message'] %}
+            <p>
                 The machine failed to do its job:
                 <span style="color:red">
                     "{{ image_analysis['error_message'] }}"
                 </span>
-            {% else %}
-                The machine guessed that it is
-                <strong>"{{ image_analysis['image_label'] }}"</strong>.
-            {% endif %}
-        </p>
+            </p>
+        {% else %}
+            <p>The machine guessed the following:</p>
+            <ul>
+                {% for tag in image_analysis['image_tags'] %}
+                    <li>
+                        {% if tag['name'] == human_label %}<strong>{% endif %}
+                            "{{ tag['name'] }}" ({{ tag['confidence'] }}%)
+                        {% if tag['name'] == human_label %}</strong>{% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
 
         <hr />
     {% endif %}

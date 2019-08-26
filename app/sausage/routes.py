@@ -34,7 +34,8 @@ def index():
 
     Then, show the form to accept the user's image and label.
     """
-    image_result = None
+    image_src = None
+    human_label = None
     image_analysis = None
 
     sausage_form = SausageForm()
@@ -45,20 +46,22 @@ def index():
 
         human_label = sausage_form.human_label.data
 
-        image_result = {
-            'human_label': human_label,
-            'image_src': 'data:{};base64,{}'.format(
-                image_mimetype,
-                base64.b64encode(image_data).decode(),
-            )
-        }
+        # display the image using its binary data
+        # so that the image itself does not need to be saved
+        image_src = 'data:{};base64,{}'.format(
+            image_mimetype,
+            base64.b64encode(image_data).decode(),
+        )
 
         try:
             computer_vision_client = Client()
-            image_analysis = computer_vision_client.analyse_image(
-                image_data,
-                human_label,
-            )
+            image_analysis = computer_vision_client.analyse_image(image_data)
+
+            # convert the float confidences to (integer) percentage confidences
+            image_analysis['image_tags'] = [
+                {'name': t['name'], 'confidence': int(t['confidence'] * 100)} \
+                    for t in image_analysis['image_tags']
+            ]
         except ComputerVisionException as e:
             image_analysis = {
                 'error_message': e,
@@ -67,6 +70,7 @@ def index():
     return render_template(
         'index.html',
         sausage_form=sausage_form,
-        image_result=image_result,
+        image_src=image_src,
+        human_label=human_label,
         image_analysis=image_analysis,
     )
